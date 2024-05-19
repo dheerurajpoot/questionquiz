@@ -1,0 +1,65 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+.header {
+  background: #653d84;
+  padding: 30px 0;
+}
+.header h2 {
+  color: #fff;
+}
+.marking {
+  text-align: center;
+  margin: 30px 0;
+}
+.name {
+  margin: 10px 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+.marking p {
+  font-size: 18px;
+}
+.container {
+  margin: 10px 100px;
+  padding-bottom: 40px;
+}
+#quizform ol li {
+  margin: 30px 0;
+}
+#quizform ol li h3 {
+  margin-bottom: 10px;
+}
+#quizform ol li p {
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: 600;
+}
+label input {
+  margin: 5px 10px;
+}
+.submit {
+  border: none;
+  padding: 15px 70px;
+  border-radius: 8px;
+  display: block;
+  margin: auto;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  background: #583672;
+  color: #fff;
+  font-weight: bold;
+  -webkit-box-shadow: 0px 9px 15px -11px rgba(88, 54, 114, 1);
+  -moz-box-shadow: 0px 9px 15px -11px rgba(88, 54, 114, 1);
+  box-shadow: 0px 9px 15px -11px rgba(88, 54, 114, 1);
+}
+
+.result-page{
+  border: 2px solid #653d84;
+  width: 400px;
+  margin: 150px auto;
+  padding: 20px;
+  border-radius: 10px;
+}

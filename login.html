@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Create Account : Quizz App</title>
+		<title>Login to Quizz App</title>
 		<link rel="stylesheet" href="style.css" />
 		<link
 			rel="stylesheet"
@@ -17,13 +17,7 @@
 				<div class="left">
 					<div class="contact">
 						<form id="registrationForm">
-							<h3>SIGN UP</h3>
-							<input
-								type="text"
-								id="username"
-								name="username"
-								placeholder="USER NAME"
-								required />
+							<h3>SIGN IN</h3>
 							<input
 								type="email"
 								id="email"
@@ -37,11 +31,11 @@
 								placeholder="PASSWORD"
 								required />
 							<button type="submit" class="submit">
-								REGISTER
+								LET'S GO
 							</button>
 							<p class="already-account">
-								Already have an account :
-								<a href="login.html">Login Here</a>
+								Don't have an account :
+								<a href="index.html">Register Here</a>
 							</p>
 						</form>
 					</div>
@@ -61,38 +55,41 @@
 				.addEventListener("submit", async function (e) {
 					e.preventDefault();
 
-					const name = document.getElementById("username").value;
 					const email = document.getElementById("email").value;
 					const password = document.getElementById("password").value;
 
 					try {
 						const response = await fetch(
-							"http://localhost:4000/api/v1/user/register",
+							"http://localhost:4000/api/v1/user/login",
 							{
 								method: "POST",
 								headers: {
 									"Content-Type": "application/json",
 								},
 								body: JSON.stringify({
-									name,
 									email,
 									password,
 								}),
 							}
 						);
-						console.log(response);
 						if (response.ok) {
 							const result = await response.json();
-							alert("User registered successfully!");
-							window.location.href = "./login.html";
+							localStorage.setItem(
+								"user",
+								JSON.stringify(result?.user)
+							);
+							alert(result?.message);
+							setTimeout(() => {
+								window.location.href = "./main.html";
+							}, 800);
 						} else {
 							const error = await response.json();
-							alert("Registration failed: " + error.message);
+							alert("Login failed: " + error.message);
 						}
 					} catch (error) {
 						console.error("Error:", error);
 						alert(
-							"An error occurred during registration. Please try again."
+							"An error occurred during login. Please try again."
 						);
 					}
 				});

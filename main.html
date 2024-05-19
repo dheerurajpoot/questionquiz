@@ -4,77 +4,76 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>C++ MCQ TEST</title>
-		<style>
-			* {
-				padding: 0;
-				margin: 0;
-				box-sizing: border-box;
-			}
-			.header {
-				background: #653d84;
-				padding: 30px 0;
-			}
-			.header h2 {
-				color: #fff;
-			}
-			.marking {
-				text-align: center;
-				margin: 30px 0;
-			}
-			.marking p {
-				font-size: 18px;
-			}
-			.container {
-				margin: 10px 100px;
-				padding-bottom: 40px;
-			}
-			#quizform ol li {
-				margin: 30px 0;
-			}
-			#quizform ol li h3 {
-				margin-bottom: 10px;
-			}
-			#quizform ol li p {
-				margin-bottom: 10px;
-				font-size: 18px;
-				font-weight: 600;
-			}
-			label input {
-				margin: 5px 10px;
-			}
-			.submit {
-				border: none;
-				padding: 15px 70px;
-				border-radius: 8px;
-				display: block;
-				margin: auto;
-				margin-top: 120px;
-				background: #583672;
-				color: #fff;
-				font-weight: bold;
-				-webkit-box-shadow: 0px 9px 15px -11px rgba(88, 54, 114, 1);
-				-moz-box-shadow: 0px 9px 15px -11px rgba(88, 54, 114, 1);
-				box-shadow: 0px 9px 15px -11px rgba(88, 54, 114, 1);
-			}
-		</style>
+		<link rel="stylesheet" href="main.css" />
 		<script>
+			// get user mail from local storage
+			let userId;
+			window.onload = async function () {
+				const userString = localStorage.getItem("user");
+				if (userString) {
+					const user = JSON.parse(userString);
+					userId = user?._id;
+					document.getElementById("username").textContent =
+						user?.name;
+					document.getElementById("useremail").textContent =
+						user?.email;
+				} else {
+					alert("No user logged in.");
+					window.location.href = "./login.html";
+				}
+			};
+
+			// submiting Question paper and result
+
 			function final() {
 				const form = document.getElementById("quizform");
 				const inputs = form.querySelectorAll(
 					"input[type='radio']:checked"
 				);
 				let score = 0;
-
 				inputs.forEach((input) => {
 					if (input.value === "c") {
 						score += 2;
 					}
 				});
-
 				const resultElement = document.getElementById("res");
 				resultElement.textContent = `You scored ${score} out of 20.`;
 				form.reset();
+				sendUserResult(score);
 			}
+
+			const sendUserResult = async (marks) => {
+				try {
+					const response = await fetch(
+						"http://localhost:4000/api/v1/user/result",
+						{
+							method: "POST",
+							headers: {
+								"Content-Type": "application/json",
+							},
+							body: JSON.stringify({
+								userId,
+								marks,
+							}),
+						}
+					);
+
+					if (response.ok) {
+						const result = await response.json();
+						setTimeout(() => {
+							window.location.href = "./result.html";
+						}, 800);
+					} else {
+						const error = await response.json();
+						alert("result submission failed: " + error.message);
+					}
+				} catch (error) {
+					console.error("Error:", error);
+					alert(
+						"An error occurred during sending marks. Please try again."
+					);
+				}
+			};
 		</script>
 	</head>
 	<body>
@@ -85,6 +84,12 @@
 			<hr />
 		</center>
 		<div class="marking">
+			<p class="name">Name: <span id="username"></span></p>
+			<p class="name">Email: <span id="useremail"></span></p>
+			<p class="name">
+				Already Given Test see Result:
+				<a href="results.html">Click Here</a>
+			</p>
 			<p>
 				Note:- 2 marks for every <b>correct</b> answer and 0 for every
 				<b>incorrect</b>
